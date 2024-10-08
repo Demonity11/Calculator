@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 400px;
+}
+
+#display {
+    width: 400px;
+    height: 100px;
+    text-align: end;
+    font-size: 18px;
+}
+
+.btn {
+    height: 100px;
+    width: 100px;
+    font-size: 18px;
+}
