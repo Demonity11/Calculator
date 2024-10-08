@@ -7,8 +7,10 @@
 #display {
     width: 400px;
     height: 100px;
+    margin: 0;
     text-align: end;
     font-size: 18px;
+    border: 2px solid black;
 }
 
 .btn {
