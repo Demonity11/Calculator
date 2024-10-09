@@ -69,20 +69,18 @@ let displayText = {
 keys.addEventListener("click", (btn) => {
     let key = btn.target.textContent;
 
-    if (displayText.n1 === "0") {
-        displayText.n1 = "";
-    }
-
     if (!(key === "CE" || key === "C" || key === "Del" ||
         key === "+/-" || key === "=")) {
 
         if (key === "/" || key === "*" || key === "+" || key === "-") {
             displayText.op = key;
+        } 
 
-        } else if (displayText.op) {
+        else if (displayText.op) {
             displayText.n2 += key;
 
         } else if (!displayText.op) {
+            displayText.n1 = (displayText.n1 === "0" && key != "0") ? "" : "0";
             displayText.n1 += key;
         }
 
