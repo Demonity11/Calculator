@@ -114,7 +114,6 @@ keys.addEventListener("click", (btn) => {
 
         } else if (displayText.op && displayText.n2 != "") {
             displayText.n2 = (displayText.n2.includes("-")) ? displayText.n2.slice(1, displayText.n2.length) : "-" + displayText.n2;
-            displayText.n2 = "-" + displayText.n2;
         }
 
     } else if (key === "Del") {
