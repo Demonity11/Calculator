@@ -68,14 +68,17 @@ let displayText = {
 
 keys.addEventListener("click", (btn) => {
     let key = btn.target.textContent;
+    let result = 0;
 
     if (!(key === "CE" || key === "C" || key === "Del" ||
         key === "+/-" || key === "=")) {
 
         if (key === "/" || key === "*" || key === "+" || key === "-") {
             if (displayText.n2) {
-                display.textContent = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
-                displayText.n1 = display.textContent.toString();
+                result = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
+                display.textContent = (result.toString().includes(".")) ? result.toFixed(2) : result;
+                
+                displayText.n1 = result.toFixed(2).toString()
                 displayText.op = key;
                 displayText.n2 = "";
             }
@@ -119,8 +122,10 @@ keys.addEventListener("click", (btn) => {
             displayText.n1 = (displayText.n1.length === 0) ? "0" : displayText.n1;
         }
     } else if (key === "=" && displayText.n2) {
-        display.textContent = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
-        displayText.n1 = display.textContent.toString();
+        result = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
+        display.textContent = (result.toString().includes(".")) ? result.toFixed(2) : result;
+        
+        displayText.n1 = result.toFixed(2).toString();
         displayText.op = "";
         displayText.n2 = "";
 
