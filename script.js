@@ -104,9 +104,9 @@ keys.addEventListener("click", (btn) => {
         }
     } else if (key === "=" && displayText.n2) {
         display.textContent = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
-        displayText.n1 = "0";
+        displayText.n1 = display.textContent.toString();
         displayText.op = "";
-        displayText.op = "";
+        displayText.n2 = "";
 
         return;
     }

@@ -2,6 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #display {
