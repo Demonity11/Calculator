@@ -98,7 +98,7 @@ keys.addEventListener("click", (btn) => {
     } else if (key === "CE" || key === "C") {
         displayText.n1 = "0";
         displayText.op = "";
-        displayText.op = "";
+        displayText.n2 = "";
 
     } else if (key === "+/-") {
         if (!(displayText.op && displayText.n1 === "0")) {
