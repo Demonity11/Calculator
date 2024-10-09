@@ -86,9 +86,13 @@ keys.addEventListener("click", (btn) => {
             displayText.op = key;
 
         } else if (displayText.op) {
+            if (key === "." && displayText.n2.includes(".")) return;
+            
             displayText.n2 += key;
 
         } else if (!displayText.op) {
+            if (key === "." && displayText.n1.includes(".")) return;
+
             displayText.n1 = (displayText.n1 === "0" && key != "0" ||
             displayText.n1 === "Infinity") ? "" : displayText.n1;
 
