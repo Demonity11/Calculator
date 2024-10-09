@@ -50,6 +50,8 @@ function createButtons() {
     for (const btn of buttons) {
         const button = document.createElement("button");
         button.setAttribute("class", "btn");
+        if (isNaN(btn)) button.setAttribute("class", "btn highlight");
+
         button.textContent = btn;
 
         keys.appendChild(button);
@@ -76,9 +78,11 @@ keys.addEventListener("click", (btn) => {
         if (key === "/" || key === "*" || key === "+" || key === "-") {
             if (displayText.n2) {
                 result = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
-                display.textContent = (result.toString().includes(".")) ? result.toFixed(2) : result;
+                result = (result.toString().includes(".")) ? result.toFixed(2) : result;
+        
+                display.textContent = result;
                 
-                displayText.n1 = result.toFixed(2).toString()
+                displayText.n1 = result.toString();
                 displayText.op = key;
                 displayText.n2 = "";
             }
@@ -87,7 +91,7 @@ keys.addEventListener("click", (btn) => {
 
         } else if (displayText.op) {
             if (key === "." && displayText.n2.includes(".")) return;
-            
+
             displayText.n2 += key;
 
         } else if (!displayText.op) {
@@ -127,9 +131,11 @@ keys.addEventListener("click", (btn) => {
         }
     } else if (key === "=" && displayText.n2) {
         result = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
-        display.textContent = (result.toString().includes(".")) ? result.toFixed(2) : result;
+        result = (result.toString().includes(".")) ? result.toFixed(2) : result;
+
+        display.textContent = result;
         
-        displayText.n1 = result.toFixed(2).toString();
+        displayText.n1 = result.toString();
         displayText.op = "";
         displayText.n2 = "";
 
