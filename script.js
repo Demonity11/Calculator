@@ -80,7 +80,7 @@ keys.addEventListener("click", (btn) => {
 
         } else if (!displayText.op) {
             displayText.n1 = (displayText.n1 === "0" && key != "0" ||
-            displayText.n1 === "Infinity") ? "" : "0";
+            displayText.n1 === "Infinity") ? "" : displayText.n1;
 
             displayText.n1 += key;
         }
@@ -102,10 +102,12 @@ keys.addEventListener("click", (btn) => {
 
         if (displayText.n2) {
             displayText.n2 = displayText.n2.substring(0, displayText.n2.length -1);
+
         } else if (displayText.op) {
             displayText.op = "";
+            
         } else {
-            displayText.n1 = displayText.n1.substring(0, displayText.n1.length -1);
+            displayText.n1 = (displayText.n1 === "Infinity") ? "0" : displayText.n1.substring(0, displayText.n1.length -1);
 
             displayText.n1 = (displayText.n1.length === 0) ? "0" : displayText.n1;
         }
