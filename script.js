@@ -74,13 +74,14 @@ keys.addEventListener("click", (btn) => {
 
         if (key === "/" || key === "*" || key === "+" || key === "-") {
             displayText.op = key;
-        } 
 
-        else if (displayText.op) {
+        } else if (displayText.op) {
             displayText.n2 += key;
 
         } else if (!displayText.op) {
-            displayText.n1 = (displayText.n1 === "0" && key != "0") ? "" : "0";
+            displayText.n1 = (displayText.n1 === "0" && key != "0" ||
+            displayText.n1 === "Infinity") ? "" : "0";
+
             displayText.n1 += key;
         }
 
@@ -88,6 +89,14 @@ keys.addEventListener("click", (btn) => {
         displayText.n1 = "0";
         displayText.op = "";
         displayText.op = "";
+
+    } else if (key === "+/-") {
+        if (!(displayText.op && displayText.n1 === "0")) {
+            displayText.n1 = "-" + displayText.n1;
+
+        } else if (displayText.op && !displayText.n1 === "0") {
+            displayText.n2 = "-" + displayText.n2;
+        }
 
     } else if (key === "Del") {
 
