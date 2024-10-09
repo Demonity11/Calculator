@@ -109,10 +109,10 @@ keys.addEventListener("click", (btn) => {
         displayText.n2 = "";
 
     } else if (key === "+/-") {
-        if (!(displayText.op && displayText.n1 === "0")) {
+        if (!displayText.op && displayText.n1 != "0") {
             displayText.n1 = (displayText.n1.includes("-")) ? displayText.n1.slice(1, displayText.n1.length) : "-" + displayText.n1;
 
-        } else if (displayText.op && !displayText.n1 === "0") {
+        } else if (displayText.op && displayText.n2 != "") {
             displayText.n2 = (displayText.n2.includes("-")) ? displayText.n2.slice(1, displayText.n2.length) : "-" + displayText.n2;
             displayText.n2 = "-" + displayText.n2;
         }
