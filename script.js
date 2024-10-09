@@ -16,17 +16,23 @@ function divide(n1, n2) {
 
 function operate(str) {
     [n1, op, n2] = str.split(" ");
+    n1 = parseFloat(n1);
+    n2 = parseFloat(n2);
     let result = 0;
     
     switch (op) {
         case "+":
             result = add(n1, n2);
+            break;
         case "-":
             result = subtract(n1, n2);
+            break;
         case "*":
             result = multiply(n1, n2);
+            break;
         case "/":
             result = divide(n1, n2);
+            break;
     }
 
     return result;
@@ -54,44 +60,56 @@ createButtons();
 
 const keys = document.querySelector("#keys");
 const display = document.querySelector("#display");
-let displayText = ["0", "",  ""];
+let displayText = {
+    n1: "0",
+    op: "",
+    n2: "",
+};
 
 keys.addEventListener("click", (btn) => {
     let key = btn.target.textContent;
 
-    if (displayText[0] === "0") {
-        displayText[0] = "";
+    if (displayText.n1 === "0") {
+        displayText.n1 = "";
     }
 
     if (!(key === "CE" || key === "C" || key === "Del" ||
         key === "+/-" || key === "=")) {
 
         if (key === "/" || key === "*" || key === "+" || key === "-") {
-            displayText[1] = key;
-        } else if (displayText[1]) {
-            displayText[2] += key;
-        } else if (!displayText[1]) {
-            displayText[0] += key;
+            displayText.op = key;
+
+        } else if (displayText.op) {
+            displayText.n2 += key;
+
+        } else if (!displayText.op) {
+            displayText.n1 += key;
         }
 
     } else if (key === "CE" || key === "C") {
-        displayText = ["0", "", ""];
+        displayText.n1 = "0";
+        displayText.op = "";
+        displayText.op = "";
+
     } else if (key === "Del") {
 
-        if (displayText[2]) {
-            displayText[2] = displayText[2].substring(0, displayText[2].length -1);
-        } else if (displayText[1]) {
-            displayText[1] = "";
+        if (displayText.n2) {
+            displayText.n2 = displayText.n2.substring(0, displayText.n2.length -1);
+        } else if (displayText.op) {
+            displayText.op = "";
         } else {
-            displayText[0] = displayText[0].substring(0, displayText[0].length -1);
+            displayText.n1 = displayText.n1.substring(0, displayText.n1.length -1);
 
-            displayText[0] = (displayText[0].length === 0) ? "0" : displayText[0];
+            displayText.n1 = (displayText.n1.length === 0) ? "0" : displayText.n1;
         }
-    } else if (key === "=" && displayText[2]) {
-        display.textContent = operate(displayText.join(" "));
-        displayText = ["0", "", ""];
+    } else if (key === "=" && displayText.n2) {
+        display.textContent = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
+        displayText.n1 = "0";
+        displayText.op = "";
+        displayText.op = "";
+
         return;
     }
 
-    display.textContent = displayText.join(" ");
+    display.textContent = `${displayText.n1} ${displayText.op} ${displayText.n2}`;
 });
