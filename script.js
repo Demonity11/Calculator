@@ -109,7 +109,8 @@ let displayText = {
             return;
         }
 
-        if (this.op && this.n2 && !key === ".") this.getResult();
+        if (this.op && this.n2 && key !== ".") this.getResult();
+
         if (key === ".") return;
         this.op = key;
     },
