@@ -1,39 +1,33 @@
-function add(n1, n2) {
-    return n1 + n2;
-}
-
-function subtract(n1, n2) {
-    return n1 - n2;
-}
-
-function multiply(n1, n2) {
-    return n1 * n2;
-}
-
-function divide(n1, n2) {
-    return n1 / n2;
-}
-
 function operate(str) {
     [n1, op, n2] = str.split(" ");
+    
+    if (n2.includes("(")) {
+        n2 = n2.split("").filter((digit) => !(digit === "(" || digit === ")"));
+        n2 = n2.join("");
+    }
+
     n1 = parseFloat(n1);
     n2 = parseFloat(n2);
     let result = 0;
     
     switch (op) {
         case "+":
-            result = add(n1, n2);
+            result = n1 + n2;
             break;
         case "-":
-            result = subtract(n1, n2);
+            result = n1 - n2;
             break;
         case "*":
-            result = multiply(n1, n2);
+            result = n1 * n2;
             break;
         case "/":
-            result = divide(n1, n2);
+            result = n1 / n2;
             break;
     }
+
+    if (result.toString().includes(".")) result = result.toFixed(2);
+
+    if (result === Infinity) result = 0;
 
     return result;
 }
@@ -66,81 +60,72 @@ let displayText = {
     n1: "0",
     op: "",
     n2: "",
+    getKey: function (key) {
+        if (!isNaN(key) && this.op || (this.op && key === ".")) {
+            this.n2 += key;
+            return;
+        } else if (key === "C" || key === "CE") {
+            this.n1 = "0";
+            this.op = "";
+            this.n2 = "";
+            return;
+        } else if (!isNaN(key) || key === ".") {
+            if (this.n1 === "0") this.n1 = "";
+            this.n1 += key;
+            return;
+        } else if (key === "Del") {
+            if (this.n2) {
+                this.n2 = this.n2.slice(0, this.n2.length -1);
+                return;
+            } else if (this.op) {
+                this.op = "";
+                return;
+            }
+
+            this.n1 = this.n1.slice(0, this.n1.length -1);
+            if (this.n1.length === 0) this.n1 = "0";
+            return;
+        }
+        if (key === "+/-") {
+            if (this.n2 && !this.n2.includes("-")) {
+                if (this.op === "-") {
+                    this.n2 = `(-${this.n2})`;
+                    return;
+                }
+
+                this.n2 = `-${this.n2}`;
+                return;
+            } else if (this.n2.includes("-")) {
+                this.n2 = this.n2.slice(1, this.n2.length);
+                return;
+            }
+
+            if (this.n1.includes("-")) {
+                this.n1 = this.n1.slice(1, this.n1.length);
+                return;
+            } else if (this.n1 === "0") return;
+            
+            this.n1 = `-${this.n1}`; 
+            return;
+        }
+
+        if (this.op) this.getResult();
+        this.op = key;
+    },
+    getResult: function() {
+        let result = 0;
+        result = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
+        this.n1 = result.toString();
+        this.op = "";
+        this.n2 = "";
+    },
 };
 
 keys.addEventListener("click", (btn) => {
     let key = btn.target.textContent;
-    let result = 0;
 
-    if (!(key === "CE" || key === "C" || key === "Del" ||
-        key === "+/-" || key === "=")) {
-
-        if (key === "/" || key === "*" || key === "+" || key === "-") {
-            if (displayText.n2) {
-                result = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
-                result = (result.toString().includes(".")) ? result.toFixed(2) : result;
-        
-                display.textContent = result;
-                
-                displayText.n1 = result.toString();
-                displayText.op = key;
-                displayText.n2 = "";
-            }
-
-            displayText.op = key;
-
-        } else if (displayText.op) {
-            if (key === "." && displayText.n2.includes(".")) return;
-
-            displayText.n2 += key;
-
-        } else if (!displayText.op) {
-            if (key === "." && displayText.n1.includes(".")) return;
-
-            displayText.n1 = (displayText.n1 === "0" && key != "0" ||
-            displayText.n1 === "Infinity") ? "" : displayText.n1;
-
-            displayText.n1 += key;
-        }
-
-    } else if (key === "CE" || key === "C") {
-        displayText.n1 = "0";
-        displayText.op = "";
-        displayText.n2 = "";
-
-    } else if (key === "+/-") {
-        if (!displayText.op && displayText.n1 != "0") {
-            displayText.n1 = (displayText.n1.includes("-")) ? displayText.n1.slice(1, displayText.n1.length) : "-" + displayText.n1;
-
-        } else if (displayText.op && displayText.n2 != "") {
-            displayText.n2 = (displayText.n2.includes("-")) ? displayText.n2.slice(1, displayText.n2.length) : "-" + displayText.n2;
-        }
-
-    } else if (key === "Del") {
-
-        if (displayText.n2) {
-            displayText.n2 = displayText.n2.substring(0, displayText.n2.length -1);
-
-        } else if (displayText.op) {
-            displayText.op = "";
-
-        } else {
-            displayText.n1 = (displayText.n1 === "Infinity") ? "0" : displayText.n1.substring(0, displayText.n1.length -1);
-
-            displayText.n1 = (displayText.n1.length === 0) ? "0" : displayText.n1;
-        }
-    } else if (key === "=" && displayText.n2) {
-        result = operate(`${displayText.n1} ${displayText.op} ${displayText.n2}`);
-        result = (result.toString().includes(".")) ? result.toFixed(2) : result;
-
-        display.textContent = result;
-        
-        displayText.n1 = result.toString();
-        displayText.op = "";
-        displayText.n2 = "";
-
-        return;
-    }
+    if (key !== "=") displayText.getKey(key);
+    if (key === "=") displayText.getResult();
 
     display.textContent = `${displayText.n1} ${displayText.op} ${displayText.n2}`;
 });
