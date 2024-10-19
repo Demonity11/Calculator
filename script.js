@@ -27,7 +27,7 @@ function operate(str) {
 
     if (result.toString().includes(".")) result = result.toFixed(2);
 
-    if (result === Infinity) result = 0;
+    if (result === Infinity || result === NaN) result = 0;
 
     return result;
 }
@@ -61,7 +61,7 @@ let displayText = {
     op: "",
     n2: "",
     getKey: function (key) {
-        if (!isNaN(key) && this.op || (this.op && key === ".")) {
+        if (!isNaN(key) && this.op || (this.op && key === "." && !this.n2.includes("."))) {
             this.n2 += key;
             return;
         } else if (key === "C" || key === "CE") {
@@ -69,7 +69,7 @@ let displayText = {
             this.op = "";
             this.n2 = "";
             return;
-        } else if (!isNaN(key) || key === ".") {
+        } else if (!isNaN(key) || (key === "." && !this.n1.includes("."))) {
             if (this.n1 === "0") this.n1 = "";
             this.n1 += key;
             return;
@@ -109,7 +109,8 @@ let displayText = {
             return;
         }
 
-        if (this.op) this.getResult();
+        if (this.op && this.n2 && !key === ".") this.getResult();
+        if (key === ".") return;
         this.op = key;
     },
     getResult: function() {
